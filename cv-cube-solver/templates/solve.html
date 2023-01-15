@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>CV Cube Solver</title>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel='shortcut icon' type='image/x-icon' href="{{ url_for('static', filename='favicon.ico') }}"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='twistysim.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.redirect.js') }}"></script>
+
+        <script>
+        $(document).ready(function(){
+            const solution = "{{ solution|safe }}"
+            const solution_length = solution.split(" ").length;
+            $("#count").html("The cube was successfully solved in " + solution_length + " moves.\
+            <br><br>The theoretical maximum number of moves required to solve any of the 43 \
+            quintillion combinations of the cube is 20.\
+            <br>Not bad, right? Read more about <a href=\"https://www.cube20.org/\">God's Number</a>.");
+
+            $("#back").click(function(){
+                window.location.replace("/");
+            });
+        });
+        </script>
+    </head>
+
+    <body>
+        <div class="header">
+            <h1>CV Cube Solver</h1>
+            <a href="https://truo.ng">by Raymond Truong</a>
+            <br><br><hr>
+        </div>
+
+        <p>
+            {% if success %}
+                <b>Cube solved successfully!</b><br><br>
+
+                Solution, in <a href="https://ruwix.com/the-rubiks-cube/notation/">Half Turn Metric</a>
+                (with the yellow face on top and the blue face facing you, as you originally held it):<br>
+                <b>{{ solution }}</b><br>
+
+                Or, visualize below:
+                </p>
+                <div class="row">
+                    <div class="column">
+                        <div id="tp1"></div>
+                        <script>
+                            // generate cube
+                            var cube = TTk.AlgorithmPuzzle(3)
+                                .size({width:300, height:300})
+                                .rotate(true);
+
+                            cube.controls(true)
+                                .showAlg(false)
+                                .hoverButtons(true)
+                                .hoverAlg(false);
+
+                            cube.case("{{ solution|safe }}")
+
+                            // render into div
+                            cube("#tp1");
+                        </script>
+                    </div>
+                </div>
+
+                <p id="count"></p>
+
+            {% else %}
+                <b>The cube was unable to be solved.</b><br><br>
+                This is either because:
+                <ul>
+                    <li>your cube is mathematically impossible to solve (edges have been flipped, or corners have been twisted), or;
+                    </li>
+                    <li>your cube's colour scheme could not be recognized, or is not standard, or;</li>
+                    <li>the image capture was inaccurate.</li>
+                </ul>
+                Please try again!
+                </p>
+            {% endif %}
+
+        <p>
+            <br>
+            <button id="back">Go back</button>
+        </p>
+
+        <div class="footer">
+            <hr>
+            <p>&copy; 2018 | <a href="https://github.com/raymondtruong/cv-cube-solver">source code</a></p>
+        </div>
+    </body>
+</html>

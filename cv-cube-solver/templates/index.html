@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <title>CV Cube Solver</title>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel='shortcut icon' type='image/x-icon' href="{{ url_for('static', filename='favicon.ico') }}"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='twistysim.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.redirect.js') }}"></script>
+
+        <script>
+            $(document).ready(function(){
+                const faces = ["green", "orange", "blue", "red", "yellow", "white"];
+                const opposite_faces = ["blue", "red", "green", "orange", "white", "yellow"];
+                var i = 0;
+                var images = [];
+
+                // when video is clicked
+                $("#video_box").click(function(){
+
+                    // capture image
+                    const canvas = window.canvas = document.querySelector("#canvas");
+                    canvas.style.display="none";
+                    canvas.width = 240;
+                    canvas.height = 180;
+                    canvas.getContext('2d').drawImage(video, 0, 0, 240, 180);
+
+                    // convert to base 64
+                    images[i] = canvas.toDataURL("image/png");
+
+                    // increment
+                    i += 1;
+                    cube.forward();
+
+
+                    if (i < 6) {
+                        $("#prompt").html("The <b>" + opposite_faces[i] + "</b> face should be facing you, and the \
+                        <b>" + faces[i] + "</b> face should be facing the camera.<br>Position each piece \
+                        inside the grid, and click the video above to capture face <b>" + (i + 1) + "</b> out of 6.");
+
+                        $("#video_overlays img").attr("src", "static/grid_" + faces[i] + ".png");
+                    } else {
+                        $("#guide").html("<br>All faces have been captured!");
+                        $("#prompt").text("Click the submit button to review the capture and proceed with the solve.");
+                        $("#video_overlays img").attr("src", "static/grid_black.png");
+                        $("#video_overlays").css("opacity", "0.25");
+                        $("#tp1").css("opacity", "0.25");
+
+
+                        $("#submit").prop("disabled", false);
+                    }
+                });
+
+                // submit all faces via POST request and redirect
+                $("#submit").click(function(){
+                    $.redirect("/preview", {"images": JSON.stringify(images)});
+                });
+
+            });
+        </script>
+    </head>
+
+
+    <body>
+        <div class="header">
+            <h1>CV Cube Solver</h1>
+            <a href="https://truo.ng">by Raymond Truong</a>
+            <br><br><hr><br>
+        </div>
+
+        <div class="row">
+            <div class="column">
+                <div id="video_box">
+                    <div id="video_overlays">
+                        <img src="static/grid_green.png" class="overlay"/>
+                    </div>
+                    <div>
+                        <video playsinline autoplay width="480" height="360" class="video"></video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div id="tp1"></div>
+                <script>
+                    // generate cube
+                    var cube = TTk.AlgorithmPuzzle(3)
+                        .size({width:300, height:300})
+                        .rotate(false);
+
+                    cube.controls(false)
+                        .showAlg(false)
+                        .hoverButtons(true)
+                        .hoverAlg(false);
+
+                    // initial state
+                    cube.fc('ddddoddddddddbddddddddyddddddddrddddddddgddddddddwdddd')
+                    cube.case("y y y x x2");
+
+                    // render into div
+                    cube("#tp1");
+                </script>
+            </div>
+
+            <div class="column">
+                <canvas id="canvas"></canvas>
+            </div>
+        </div>
+
+
+        <p id="guide"><br>Hold the cube as demonstrated in the model above.<br></p>
+        <p id="prompt">
+            The <b>blue</b> face should be facing you, and the <b>green</b> face should be facing the camera.
+            <br>
+            Position each piece inside the grid, and click the video above to capture face <b>1</b> out of 6.
+        </p>
+        <button id="submit" disabled>Submit</button>
+        <br>
+
+        <script>
+            // access user webcam
+            const video = document.querySelector('video');
+
+            function handleSuccess(stream) {
+              window.stream = stream;
+              video.srcObject = stream;
+            }
+
+            function handleError(error) {
+              console.log('navigator.getUserMedia error: ', error);
+            }
+
+            navigator.mediaDevices.getUserMedia({ video: true }).then(handleSuccess).catch(handleError);
+
+        </script>
+
+        <div class="footer">
+            <hr>
+            <p>&copy; 2018 | <a href="https://github.com/raymondtruong/cv-cube-solver">source code</a></p>
+        </div>
+    </body>
+</html>

@@ -45,8 +45,10 @@ def preview():
             for column in range(3):
 
                 # cut each face into 48x48 squares and identify their colour
-                square = image[(row * 48):((row + 1) * 48), (column * 48):((column + 1) * 48)]
-                colours[face][row][column] = identify_colour(square, colour_scheme)
+                square = image[(row * 48):((row + 1) * 48),
+                               (column * 48):((column + 1) * 48)]
+                colours[face][row][column] = identify_colour(
+                    square, colour_scheme)
 
     # generate a "net" of the cube for use with our algorithm, and also make a
     # second slightly modified version compatible with the visualization library
@@ -170,12 +172,18 @@ def generate_net(c):
     The string takes the form U1U2U3...R1R2R3...F1...D1...L1...B1..., as
     dictated by this implementation of Kociemba's algorithm.
     """
-    u = [c[4][0][2], c[4][1][2], c[4][2][2], c[4][0][1], c[4][1][1], c[4][2][1], c[4][0][0], c[4][1][0], c[4][2][0]]
-    r = [c[3][0][0], c[3][0][1], c[3][0][2], c[3][1][0], c[3][1][1], c[3][1][2], c[3][2][0], c[3][2][1], c[3][2][2]]
-    f = [c[2][0][0], c[2][0][1], c[2][0][2], c[2][1][0], c[2][1][1], c[2][1][2], c[2][2][0], c[2][2][1], c[2][2][2]]
-    d = [c[5][2][0], c[5][1][0], c[5][0][0], c[5][2][1], c[5][1][1], c[5][0][1], c[5][2][2], c[5][1][2], c[5][0][2]]
-    l = [c[1][0][0], c[1][0][1], c[1][0][2], c[1][1][0], c[1][1][1], c[1][1][2], c[1][2][0], c[1][2][1], c[1][2][2]]
-    b = [c[0][0][0], c[0][0][1], c[0][0][2], c[0][1][0], c[0][1][1], c[0][1][2], c[0][2][0], c[0][2][1], c[0][2][2]]
+    u = [c[4][0][2], c[4][1][2], c[4][2][2], c[4][0][1], c[4]
+         [1][1], c[4][2][1], c[4][0][0], c[4][1][0], c[4][2][0]]
+    r = [c[3][0][0], c[3][0][1], c[3][0][2], c[3][1][0], c[3]
+         [1][1], c[3][1][2], c[3][2][0], c[3][2][1], c[3][2][2]]
+    f = [c[2][0][0], c[2][0][1], c[2][0][2], c[2][1][0], c[2]
+         [1][1], c[2][1][2], c[2][2][0], c[2][2][1], c[2][2][2]]
+    d = [c[5][2][0], c[5][1][0], c[5][0][0], c[5][2][1], c[5]
+         [1][1], c[5][0][1], c[5][2][2], c[5][1][2], c[5][0][2]]
+    l = [c[1][0][0], c[1][0][1], c[1][0][2], c[1][1][0], c[1]
+         [1][1], c[1][1][2], c[1][2][0], c[1][2][1], c[1][2][2]]
+    b = [c[0][0][0], c[0][0][1], c[0][0][2], c[0][1][0], c[0]
+         [1][1], c[0][1][2], c[0][2][0], c[0][2][1], c[0][2][2]]
     net = u + r + f + d + l + b
 
     state = ''.join(net)
@@ -219,4 +227,4 @@ def kociemba_state(net):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(ssl_context='adhoc')

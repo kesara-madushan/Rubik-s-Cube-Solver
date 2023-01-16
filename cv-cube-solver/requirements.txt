@@ -1,3 +1,5 @@
-Flask==1.1.2
-opencv-python==4.3.0.36
-kociemba==1.2.1
+Flask
+opencv-python
+kociemba
+flask
+numpy

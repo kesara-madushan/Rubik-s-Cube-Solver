@@ -1,11 +1,9 @@
 <html>
     <head>
-        <title>CV Cube Solver</title>
-
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+        <title>Rubic Solver</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
         <link rel='shortcut icon' type='image/x-icon' href="{{ url_for('static', filename='favicon.ico') }}"/>
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='twistysim.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='jquery.redirect.js') }}"></script>
@@ -25,19 +23,18 @@
     </head>
 
     <body>
-        <div class="header">
-            <h1>CV Cube Solver</h1>
-            <a href="https://truo.ng">by Raymond Truong</a>
-            <br><br><hr>
-        </div>
-
+        <div class="wrapper">
+            <header class="header">
+                <h1>Rubiks-Cube-Solver</h1>
+            </header>
+        <aside class="aside aside2">
         <div class="row">
             <div class="column">
                 <div id="tp1"></div>
                 <script>
                     // generate cube
                     var cube = TTk.InteractivePuzzle(3)
-                        .size({width:300, height:300})
+                        .size({width:500, height:500})
                         .rotate(true);
 
                     // lock cube
@@ -53,7 +50,8 @@
                 </script>
             </div>
         </div>
-
+        </aside>
+        <article class="main">
         <p>
             <br>Compare the model above to the cube that you are holding. <br>
             Click and drag to rotate and interact with the model. <br>
@@ -61,16 +59,17 @@
 
             <br>
             Looks good? Solve:<br>
-            <button id="submit">Submit</button>
+            <button style="height: 50px; width: 100px" id="submit">Submit</button>
 
             <br><br>
             Not quite? Recapture:<br>
-            <button id="back">Go back</button>
+            <button style="height: 50px; width: 100px" id="back">Go back</button>
         </p>
+        </article>
 
-        <div class="footer">
-            <hr>
-            <p>&copy; 2018 | <a href="https://github.com/raymondtruong/cv-cube-solver">source code</a></p>
-        </div>
+        <footer class="footer">
+                        <h3>&copy; 2023 | FOE-SJP</h3>
+        </footer>
+    </div>
     </body>
 </html>
